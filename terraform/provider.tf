@@ -2,5 +2,6 @@
 
 provider "aws" {
   region = "${var.awsregion}"
-  shared_credentials_file = "$HOME/.aws/credentials"
+  shared_credentials_file = "/home/vagrant/.aws/credentials"
+  profile = "default"
 }
