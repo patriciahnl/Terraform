@@ -54,4 +54,7 @@ variable "subnet_avz" {
   type = "string"
 }
 
-
+variable "private_subnet_cidr_block" {
+  description = "CIDR block for private subnet"
+  type = "string"
+}
