@@ -45,16 +45,16 @@ variable "vpc_name" {
 #Variables for public subnet configuration
 variable "public_subnet_cidr_block" {
   description = "CIDR block for public subnet"
-  type = "string"
+  type = "list"
 }
 
 #Should be list of availability zones for high availabilty configuration
 variable "subnet_avz" {
   description = "Availability zone for public subnet"
-  type = "string"
+  type = "list"
 }
 
 variable "private_subnet_cidr_block" {
   description = "CIDR block for private subnet"
-  type = "string"
+  type = "list"
 }

@@ -26,9 +26,11 @@ resource "aws_internet_gateway" "igwpublicsubnet" {
 #Public subnet resource
 resource "aws_subnet" "publicsubnet" {
   vpc_id = "${aws_vpc.mainvpc.id}"
-  cidr_block = "${var.public_subnet_cidr_block}"
-  availability_zone = "${var.subnet_avz}"
-  tags = "${merge(var.vpc_resource_tags, map("VPC", var.vpc_name), map("AvailabilityZone", var.subnet_avz))}"
+  cidr_block = "${element(var.public_subnet_cidr_block, count.index)}"
+  availability_zone = "${element(var.subnet_avz, count.index)}"
+  tags = "${merge(var.vpc_resource_tags, map("VPC", var.vpc_name)}"
+  #must be a list in order to use length
+  count = "{length(var.public_subnet_cidr_block)}"
   lifecycle {
     create_before_destroy = true
   }
@@ -51,7 +53,9 @@ resource "aws_route_table" "publicroute" {
 
 #Associate public route table to public subnet
 resource "aws_route_table_association" "publicrouteassoc" {
-  subnet_id = "${aws_subnet.publicsubnet.id}"
+  count = "${length(var.public_subnet_cidr_block)}"
+  #for each subnet
+  subnet_id = "${element(aws_subnet.publicsubnet.*.id, count.index)}"
   route_table_id = "${aws_route_table.publicroute.id}"
 }
 
@@ -59,9 +63,10 @@ resource "aws_route_table_association" "publicrouteassoc" {
 #Private subnet
 resource "aws_subnet" "privatesubnet" {
   vpc_id = "${aws_vpc.mainvpc.id}"
-  cidr_block = "${var.private_subnet_cidr_block}"
-  availability_zone = "${var.subnet_avz}"
+  cidr_block = "${element(var.private_subnet_cidr_block, count.index)}"
+  availability_zone = "${element(var.subnet_avz, count.index)}"
   tags = "${merge(var.vpc_resource_tags, map("VPC", var.vpc_name), map("AvailabilityZone", var.subnet_avz))}"
+  count = "{length(var.private_subnet_cidr_block)}"
   lifecycle {
     create_before_destroy = true
   }
@@ -82,7 +87,8 @@ resource "aws_route_table" "privateroute" {
 }
 #Associate route to private subnet
 resource "aws_route_table_association" "privaterouteassoc" {
-  subnet_id = "${aws_subnet.privatesubnet.id}"
+  count = "${length(var.private_subnet_cidr_block)}"
+  subnet_id = "${element(aws_subnet.privatesubnet.*.id, count.index)}"
   route_table_id = "${aws_route_table.privateroute.id}"
   lifecycle { create_before_destroy = true }
 }
