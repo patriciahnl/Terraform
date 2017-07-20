@@ -41,3 +41,17 @@ variable "vpc_name" {
   description = "Name tag for created VPC"
   type = "string"
 }
+
+#Variables for public subnet configuration
+variable "public_subnet_cidr_block" {
+  description = "CIDR block for public subnet"
+  type = "string"
+}
+
+#Should be list of availability zones for high availabilty configuration
+variable "subnet_avz" {
+  description = "Availability zone for public subnet"
+  type = "string"
+}
+
+
