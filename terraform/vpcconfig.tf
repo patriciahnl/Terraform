@@ -65,7 +65,7 @@ resource "aws_subnet" "privatesubnet" {
   vpc_id = "${aws_vpc.mainvpc.id}"
   cidr_block = "${element(var.private_subnet_cidr_block, count.index)}"
   availability_zone = "${element(var.subnet_avz, count.index)}"
-  tags = "${merge(var.vpc_resource_tags, map("VPC", var.vpc_name), map("AvailabilityZone", var.subnet_avz))}"
+  tags = "${merge(var.vpc_resource_tags, map("VPC", var.vpc_name))}"
   count = "{length(var.private_subnet_cidr_block)}"
   lifecycle {
     create_before_destroy = true
