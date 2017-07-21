@@ -5,7 +5,7 @@
 #If choosing the second method, this type of instance must be created for each public subnet created
 # => Loop through  existent subnet ids
 
-resource "aws_instance" "nat-instance" {
+resource "aws_instance" "nat_instance" {
   
   count = "${var.number_of_nat_instances}" 
 
