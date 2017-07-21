@@ -35,3 +35,10 @@ variable "root_volume_size" {
 variable "nat_instance_name" {
   description  = "Name TAG of NAT instance"
 }
+
+variable "inbound_ports" {
+  description = "Comma separated list of ports that will be opened on the public facing IP of the NAT instance" 
+  default = "22,443"
+}
+
+
