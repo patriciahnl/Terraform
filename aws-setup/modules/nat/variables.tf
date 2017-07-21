@@ -41,4 +41,7 @@ variable "inbound_ports" {
   default = "22,443"
 }
 
+variable "ansible_hosts_file" {
+  description = "Path towards ansible hosts file"
+}
 
