@@ -5,7 +5,8 @@ data "template_file" "hosts_file" {
   
   #you only have access to the variables defined in the vars sectioni
   vars {
-    public_ip = ${var.public_ip}
+    #the ip allocated to the nat instance
+    public_ip = ${aws_eip_association.eip_alloc_nat.public_ip}
     private_key_file = ${var.private_key_file}
   }
 }
@@ -47,7 +48,7 @@ resource "null_resource" "local_exec_tasks" {
 
   provisioner "local-exec" {
     #empty file
-    command = "echo \"\" > ${var.nat_tasks_file}"
+    command = "echo \"\" > ${var.ansible_iptables_file}"
     
     #append each templated iptables rule
     command = "echo \"${data.template_file.nat_tasks.*.rendered}\" >> ${var.ansible_iptables_file}"
