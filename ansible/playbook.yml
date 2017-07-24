@@ -1,0 +1,5 @@
+#Main playbook
+
+- hosts: natinstance
+  roles:
+    - nat
