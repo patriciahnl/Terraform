@@ -45,3 +45,35 @@ variable "ansible_hosts_file" {
   description = "Path towards ansible hosts file"
 }
 
+variable "private_key_file"  {
+  description = "Private key used to connect to the instance"
+}
+
+variable "private_cidr_block" {
+  description = "CIDR block of the private subnets that the instance will handle NAT translation for"
+}
+
+variable "ansible_hosts_file" {
+  description  = "Ansible inventory file path"
+}
+
+variable "ansible_iptables_file" {
+  description = "Path towards Ansible iptables tasks file that will be replaced with templated file"
+}
+
+variable "subnet_id" {
+  description = "Subnet id used for instance interface creation. (public subnet id)"
+}
+
+variable "secgroups" {
+  description = "Security group ids that will be assigned to the nat instance"
+}
+
+variable "vpc_name" {
+  description = "VPC name that the instance will be assigned to"
+}
+
+variable "vpc_id" {
+  description = "Id of the VPC that the instance will be assigned to"
+}
+
