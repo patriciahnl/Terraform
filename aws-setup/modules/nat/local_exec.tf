@@ -48,7 +48,7 @@ resource "null_resource" "local_exec_tasks" {
     command = "echo \"\" > ${var.nat_tasks_file}"
     
     #append each templated iptables rule
-    command = "echo \"${data.template_file.nat_tasks.*.rendered}\" > ${var.ansible_hosts_file}"
+    command = "echo \"${data.template_file.nat_tasks.*.rendered}\" >> ${var.ansible_iptables_file}"
   }
  
   
