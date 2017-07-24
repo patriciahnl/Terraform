@@ -6,7 +6,7 @@ resource "aws_eip" "nat_instance_eip" {
 }
 
 #Allocate
-resource "aws_eip_allocation" "eip_alloc_nat" {
+resource "aws_eip_association" "eip_alloc_nat" {
   instance_id = "${aws_instance.nat_instance.id}"
   allocation_id = "${aws_eip.nat_instance_eip.id}"
 }
