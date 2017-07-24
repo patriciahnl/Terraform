@@ -37,6 +37,8 @@ resource "null_resource" "local_exec_hosts" {
 
 
 #provision nat role, main tasks file
+#It is neccesarry to add a rule for each subnet because the iptables Ansible module
+#deals only with individual rules. We cannot chain a list of network addresses. 
 
 resource "null_resource" "local_exec_tasks" {
   triggers {
