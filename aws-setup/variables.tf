@@ -58,3 +58,19 @@ variable "private_subnet_cidr_block" {
   description = "CIDR block for private subnet"
   type = "list"
 }
+
+#SSH related variables:
+variable "ssh_user" {
+  description = "SSH user used to connect to the instances"
+  type = "string"
+}
+
+variable "ssh_public_key_name" {
+  desription = "Name of ssh key used in AWS"
+  type = "string"
+}
+
+variable "ssh_public_key_file" {
+  description = "Location of the public ssh key file"
+  type = "string"
+}
