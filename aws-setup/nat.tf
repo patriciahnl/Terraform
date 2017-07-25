@@ -21,7 +21,7 @@ module "nat" {
   secgroups = "${aws_default_security_group.defaultsg.id},${aws_security_group.AllowICMP.id},${aws_security_group.DefaultPub.id}"
   ansible_hosts_file = "${var.ansible_hosts_file}"
   ansible_iptables_file = "${var.ansible_iptables_file}"
-  nat_instance_name = "NATVPN"
+  nat_instance_name = "NATVPN-PatriTerraform"
   vpc_name = "${var.vpc_name}"
   vpc_id = "${aws_vpc.mainvpc.id}"
   
