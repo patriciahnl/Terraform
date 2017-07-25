@@ -30,4 +30,5 @@ nat_inbound_ports     = "22,45654"
 
 ansible_hosts_file  = "../ansible/hosts"
 ansible_iptables_file = "../ansible/roles/nat/tasks/iptables.yml"
+ec2_os = "CentOS Linux 7 x86_64"
 

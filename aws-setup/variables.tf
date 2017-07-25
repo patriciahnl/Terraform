@@ -66,7 +66,7 @@ variable "ssh_user" {
 }
 
 variable "ssh_public_key_name" {
-  desription = "Name of ssh key used in AWS"
+  description = "Name of ssh key used in AWS"
   type = "string"
 }
 
@@ -76,7 +76,7 @@ variable "ssh_public_key_file" {
 }
 
 variable "nat_inbound_ports" {
-  escription = "Allow following TCP ports to NAT instance."
+  description = "Allow following TCP ports to NAT instance."
   default  = "22,443"
 }
 
@@ -114,3 +114,9 @@ variable "ansible_iptables_file" {
 variable "ansible_hosts_file" {
   description = "Ansible hosts file location"
 }
+
+variable "ec2_os" {
+  description = "OS version that will be used to find AMI image for EC2 creation"
+  type = "string"
+}
+

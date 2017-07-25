@@ -4,10 +4,11 @@ data "template_file" "hosts_file" {
   template = "${file("${path.module}/hosts.tpl")}"
   
   #you only have access to the variables defined in the vars sectioni
+  
   vars {
     #the ip allocated to the nat instance
-    public_ip = ${aws_eip_association.eip_alloc_nat.public_ip}
-    private_key_file = ${var.private_key_file}
+    public_ip = "${aws_eip_association.eip_alloc_nat.public_ip}"
+    private_key_file = "${var.private_key_file}"
   }
 }
 
@@ -43,7 +44,7 @@ resource "null_resource" "local_exec_hosts" {
 
 resource "null_resource" "local_exec_tasks" {
   triggers {
-    template = "${data.template_file.nat_tasks.*.rendered}"
+    template = "${join(",", data.template_file.nat_tasks.*.rendered)}"
   }
 
   provisioner "local-exec" {

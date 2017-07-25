@@ -15,9 +15,6 @@ variable "nat_instance_type" {
   description = "Amazon Instance type used for NAT instance"
 }
 
-variable "subnet_id" {
-  description  = "Subnet ID for instance IP alloc"
-}
 
 variable "key_name" {
   description = "AWS SSH key name used for instance provisioning"
@@ -51,11 +48,9 @@ variable "private_key_file"  {
 
 variable "private_cidr_block" {
   description = "CIDR block of the private subnets that the instance will handle NAT translation for"
+  type = "list"
 }
 
-variable "ansible_hosts_file" {
-  description  = "Ansible inventory file path"
-}
 
 variable "ansible_iptables_file" {
   description = "Path towards Ansible iptables tasks file that will be replaced with templated file"
@@ -65,9 +60,6 @@ variable "subnet_id" {
   description = "Subnet id used for instance interface creation. (public subnet id)"
 }
 
-variable "secgroups" {
-  description = "Security group ids that will be assigned to the nat instance"
-}
 
 variable "vpc_name" {
   description = "VPC name that the instance will be assigned to"

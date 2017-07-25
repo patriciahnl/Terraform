@@ -7,7 +7,7 @@ resource "aws_key_pair" "local_key" {
 }
 
 #Default security group
-resource "aws_default_security_grop" "defaultsg" {
+resource "aws_default_security_group" "defaultsg" {
   vpc_id = "${aws_vpc.mainvpc.id}" 
   
   #allow inside traffic between the resource with this sec
@@ -45,7 +45,7 @@ resource "aws_security_group" "AllowICMP" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = "${merge(var.default_tags, map("VPC", var.vpc_name))}"
+  tags = "${merge(var.vpc_resource_tags, map("VPC", var.vpc_name))}"
 }
 
 resource "aws_security_group" "DefaultPub" {
@@ -76,7 +76,7 @@ resource "aws_security_group" "DefaultPub" {
 #    cidr_blocks = ["0.0.0.0/0"]
 #  }
 #
-  tags = "${merge(var.default_tags, map("VPC", var.vpc_name))}"
+  tags = "${merge(var.vpc_resource_tags, map("VPC", var.vpc_name))}"
 }
 
 resource "aws_security_group" "DefaultPrv" {
@@ -99,7 +99,7 @@ resource "aws_security_group" "DefaultPrv" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = "${merge(var.default_tags, map("VPC", var.vpc_name))}"
+  tags = "${merge(var.vpc_resource_tags, map("VPC", var.vpc_name))}"
 }
 
 
