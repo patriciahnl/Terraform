@@ -74,3 +74,35 @@ variable "ssh_public_key_file" {
   description = "Location of the public ssh key file"
   type = "string"
 }
+
+variable "nat_inbound_ports" {
+  escription = "Allow following TCP ports to NAT instance."
+  default  = "22,443"
+}
+
+#-- Determine latest CentOS AMI by our search criteria
+data "aws_ami" "centos" {
+  most_recent   = true
+  owners = ["679593333241"] # CentOS
+  filter {
+    name   = "owner-alias"
+    values = ["aws-marketplace"]
+  }
+  filter {
+    name    = "name"
+    values  = ["${var.ec2_os}*"]
+  }
+  filter {
+    name    = "state"
+    values  = ["available"]
+  }
+  filter {
+    name    = "architecture"
+    values  = ["x86_64"]
+  }
+  filter {
+    name    = "virtualization-type"
+    values  = ["hvm"]
+  }
+}
+
