@@ -18,3 +18,13 @@ subnet_avz = ["us-east-1a", "us-east-1b"]
 public_subnet_cidr_block = ["10.0.1.0/24"]
 private_subnet_cidr_block = ["10.0.10.0/24"]
 
+ssh_user              = "centos"
+ssh_public_key_name   = "terraform-ssh-key" 
+
+ssh_public_key_file   = "~/.ssh/id_rsa.pub"
+
+
+#-- ports open on the NAT instance
+##-- becase we will also have VPN, we also open '45654'
+nat_inbound_ports     = "22,45654"
+
