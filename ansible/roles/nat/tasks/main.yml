@@ -1,3 +1,2 @@
-tasks:
-  - include: iptables.yml
-  - include: sysctl.yml
+- include: iptables.yml
+- include: sysctl.yml
