@@ -106,3 +106,11 @@ data "aws_ami" "centos" {
   }
 }
 
+
+variable "ansible_iptables_file" {
+  description = "Ansible iptables tasks file location"
+}
+
+variable "ansible_hosts_file" {
+  description = "Ansible hosts file location"
+}

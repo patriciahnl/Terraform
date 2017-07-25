@@ -28,3 +28,6 @@ ssh_public_key_file   = "~/.ssh/id_rsa.pub"
 ##-- becase we will also have VPN, we also open '45654'
 nat_inbound_ports     = "22,45654"
 
+ansible_hosts_file  = "../ansible/hosts"
+ansible_iptables_file = "../ansible/roles/nat/tasks/iptables.yml"
+

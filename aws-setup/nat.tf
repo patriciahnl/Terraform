@@ -13,6 +13,8 @@ module "nat" {
   #-- assuming 'private key name' by removing the '.pub' extension
   private_key_file = "${replace(var.ssh_public_key_file, ".pub", "")}"
   sgs = "${aws_default_security_group.defaultsg.id},${aws_security_group.AllowICMP.id},${aws_security_group.DefaultPub.id}"
+  ansible_hosts_file = "${var.ansible_hosts_file}"
+  ansible_iptables_file = "${var.ansible_iptables_file}"
 
 
   
