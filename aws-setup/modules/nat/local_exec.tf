@@ -45,6 +45,7 @@ resource "null_resource" "local_exec_hosts" {
 resource "null_resource" "local_exec_tasks" {
   triggers {
     template = "${join(",", data.template_file.nat_tasks.*.rendered)}"
+    #association_ip_address = "${aws_eip_association.eip_alloc_nat.id}"
   }
 
   provisioner "local-exec" {
@@ -53,6 +54,7 @@ resource "null_resource" "local_exec_tasks" {
     
     #append each templated iptables rule
     command = "echo \"${data.template_file.nat_tasks.*.rendered}\" >> ${var.ansible_iptables_file}"
+    command = "ansible-playbook ~/licenta/ansible/playbook.yml"
   }
  
   
