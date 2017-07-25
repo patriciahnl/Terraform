@@ -53,11 +53,11 @@ resource "null_resource" "local_exec_tasks" {
     command = "echo \"\" > ${var.ansible_iptables_file}"
     
     #append each templated iptables rule
-    command = "echo \"${data.template_file.nat_tasks.*.rendered}\" >> ${var.ansible_iptables_file}"
-    command = "ansible-playbook -i hosts ~/licenta/ansible/playbook.yml"
+    command = "echo \"${element(data.template_file.nat_tasks.*.rendered, count.index)}\" >> ${var.ansible_iptables_file}"
+    #command = "ansible-playbook -i ~/licenta/ansible/hosts ~/licenta/ansible/playbook.yml"
   }
  
-  
+  count = "${length(var.private_cidr_block)}"
 }
 
 
