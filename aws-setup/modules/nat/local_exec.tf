@@ -61,5 +61,32 @@ resource "null_resource" "local_exec_tasks" {
 }
 
 
+resource "null_resource" "ansible_provisioning" {
+  #wait until ip is associated
+  triggers {
+    association_ip_address = "${aws_eip_association.eip_alloc_nat.id}"
+  }
+  
+  #execute remote exec to make sure instance is in a "ready" state
+  #unlike ansible, remote exec loops until ssh is available
+  
+  provisioner "remote-exec" {
+    script = "scripts/wait_for_instance.sh"
+    
+    connection {
+      host = "${aws_eip.nat_instance_eip.public_ip}"
+      user = "centos"
+      timeout = "30s"
+      private_key = "${file(var.private_key_file)}"
+    }
+  }
+ 
+  provisioner "local-exec" {
+    command = "ansible-playbook -i ~/licenta/ansible/hosts ~/licenta/ansible/playbook.yml"
+  }
+  
+}
+
+
 
 
