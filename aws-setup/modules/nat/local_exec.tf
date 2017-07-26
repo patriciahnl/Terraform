@@ -71,7 +71,7 @@ resource "null_resource" "ansible_provisioning" {
   #unlike ansible, remote exec loops until ssh is available
   
   provisioner "remote-exec" {
-    script = "scripts/wait_for_instance.sh"
+    script = "modules/nat/scripts/wait_for_instance.sh"
     
     connection {
       host = "${aws_eip.nat_instance_eip.public_ip}"
