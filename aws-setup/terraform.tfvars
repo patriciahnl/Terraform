@@ -19,7 +19,7 @@ public_subnet_cidr_block = ["10.0.1.0/24"]
 private_subnet_cidr_block = ["10.0.10.0/24"]
 
 ssh_user              = "centos"
-ssh_public_key_name   = "terraform-ssh-key" 
+ssh_public_key_name   = "terraform-ssh-key-patri" 
 
 ssh_public_key_file   = "~/.ssh/id_rsa.pub"
 
