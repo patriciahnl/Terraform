@@ -1,0 +1,5 @@
+aws-setup/.terraform
+aws-setup/terraform.tfstate
+aws-setup/terraform.tfstate.backup
+ansible/playbook.retry
+aws-setup/terraform
