@@ -71,6 +71,9 @@ resource "null_resource" "ansible_provisioning" {
   #unlike ansible, remote exec loops until ssh is available
   
   provisioner "remote-exec" {
+
+    #path should be relative to terraform executable
+
     script = "modules/nat/scripts/wait_for_instance.sh"
     
     connection {
