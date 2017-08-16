@@ -1,0 +1,4 @@
+- include: "{{ item }}"   
+  with_items:
+    - epel.yml
+    - install.yml 
