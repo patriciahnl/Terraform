@@ -3,3 +3,4 @@
 - hosts: natinstance
   roles:
     - nat
+    - openvpn
