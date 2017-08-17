@@ -47,4 +47,52 @@
     group: root
     mode: 0755
 
+- name: Render server.up.sh
+  template:
+    src: server.up.sh.j2
+    dest: /etc/openvpn/server.up.sh
+    owner: root
+    group: root
+    mode: 0755
+  notify: restart openvpn
+
+- name: Create /etc/openvpn/server.up.d
+  file: 
+    path: /etc/openvpn/server.up.d
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Render openssl.cnf in key_dir
+  template: 
+    src: openssl.cnf.j2
+    dest: "{{ openvpn_key_dir }}/openssl.cnf"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Create index.txt
+  file: 
+    path: "{{ openvpn_key_dir }}/index.txt"
+    state: file
+    owner: root
+    group: root
+    mode: 0600
+
+- name: Create {{ openvpn_key_dir }}/serial
+  file:
+    path: "{{ openvpn_key_dir }}/serial"
+
+- name: serial file content
+  lineinfile:
+    path: "{{ openvpn_key_dir }}/serial"
+    line: '01'
+
+- name: Create DH params
+  command: sudo openssl dhparam -out {{ openvpn_key_dir }}/dh{{ openvpn_key_size }}.pem creates={{ openvpn_key_dir }}/dh{{ openvpn_key_size }}.pem
+
+
+
+
 
