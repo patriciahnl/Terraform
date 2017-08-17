@@ -57,7 +57,7 @@ resource "aws_security_group" "DefaultPub" {
     from_port = 0
     to_port = 65535
     protocol = "tcp"
-    cidr_blocks = ["194.126.146.0/24"]
+    cidr_blocks = ["194.126.146.0/24", "78.96.0.0/16"]
   }
 
   # HTTP access from anywhere
