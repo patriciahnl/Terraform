@@ -80,11 +80,14 @@
     owner: root
     group: root
     mode: 0600
+    force: no
 
 - name: Create {{ openvpn_key_dir }}/serial
   template:
     src: serial.j2
     dest: "{{ openvpn_key_dir }}/serial"
+    force: no
+    
 
 - name: Create DH params
   command: openssl dhparam -out {{ openvpn_key_dir }}/dh{{ openvpn_key_size }}.pem {{ openvpn_key_size }} creates={{ openvpn_key_dir }}/dh{{ openvpn_key_size }}.pem
@@ -102,7 +105,30 @@
     creates: "{{ openvpn_signing_ca_cert }}"
   become: true
 
+- name: Openvpn server key
+  shell: |
+    export KEY_CN='server'
+    openssl req -batch -days {{ openvpn_key_expire }} \
+    -nodes -new -newkey rsa:{{ openvpn_key_size }} -keyout {{ openvpn_key_dir }}/server.key \
+    -out {{ openvpn_key_dir }}/server.csr -extensions server \
+    -config {{ openvpn_key_dir }}/openssl.cnf && \
+    openssl ca -batch -days {{ openvpn_key_ca_expire }} \
+    -out {{ openvpn_key_dir }}/server.crt -in {{ openvpn_key_dir }}/server.csr \
+    -extensions server -md {{ openvpn_key_message_digest }} -config {{ openvpn_key_dir }}/openssl.cnf
+  args:
+    creates: "{{ openvpn_key_dir }}/server.crt"
+  become: true
 
+- name: Fix permissions for keys
+  file:
+    path: {{ item }}
+    owner: root
+    group: root
+    mode: 0600
+  with_items:
+    - "{{ openvpn_signing_ca_key }}"
+    - "{{ openvpn_key_dir }}/server.key"
+  
 
 
 
