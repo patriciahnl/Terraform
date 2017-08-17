@@ -98,7 +98,9 @@
     -{{ openvpn_message_digest }} -x509 \
     -keyout {{ openvpn_siging_ca_key }} \
     -out {{ openvpn_signing_ca_cert }} -config {{ openvpn_key_dir }}/openssl.cnf
+  creates: "{{ openvpn_signing_ca_cert }}"
   become: true
+
 
 
 
