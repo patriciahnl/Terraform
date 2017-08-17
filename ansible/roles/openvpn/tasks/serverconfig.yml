@@ -95,10 +95,11 @@
     export KEY_CN="{{ openvpn_key_org }} CA"
     openssl req -batch -days {{ openvpn_key_ca_expire }} \
     -nodes -new -newkey rsa:{{ openvpn_key_size }} \
-    -{{ openvpn_message_digest }} -x509 \
-    -keyout {{ openvpn_siging_ca_key }} \
+    -{{ openvpn_key_message_digest }} -x509 \
+    -keyout {{ openvpn_signing_ca_key }} \
     -out {{ openvpn_signing_ca_cert }} -config {{ openvpn_key_dir }}/openssl.cnf
-  creates: "{{ openvpn_signing_ca_cert }}"
+  args:
+    creates: "{{ openvpn_signing_ca_cert }}"
   become: true
 
 
