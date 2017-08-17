@@ -72,25 +72,23 @@
     group: root
     mode: 0644
 
+#Must use template instead of file (file does not create if not existing)
 - name: Create index.txt
-  file: 
-    path: "{{ openvpn_key_dir }}/index.txt"
-    state: file
+  template: 
+    src: index.txt.j2
+    dest: "{{ openvpn_key_dir }}/index.txt"
     owner: root
     group: root
     mode: 0600
 
 - name: Create {{ openvpn_key_dir }}/serial
-  file:
-    path: "{{ openvpn_key_dir }}/serial"
-
-- name: serial file content
-  lineinfile:
-    path: "{{ openvpn_key_dir }}/serial"
-    line: '01'
+  template:
+    src: serial.j2
+    dest: "{{ openvpn_key_dir }}/serial"
 
 - name: Create DH params
-  command: sudo openssl dhparam -out {{ openvpn_key_dir }}/dh{{ openvpn_key_size }}.pem creates={{ openvpn_key_dir }}/dh{{ openvpn_key_size }}.pem
+  command: openssl dhparam -out {{ openvpn_key_dir }}/dh{{ openvpn_key_size }}.pem {{ openvpn_key_size }} creates={{ openvpn_key_dir }}/dh{{ openvpn_key_size }}.pem
+  become: true
 
 
 
