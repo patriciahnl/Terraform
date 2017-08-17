@@ -4,7 +4,7 @@
     state: directory
     owner: root
     group: root
-    recurse: yes
+    #recurse: yes
     mode: 0700
 
 - name: Create /etc/openvpn/easy-rsa directory
