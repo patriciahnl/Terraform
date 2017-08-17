@@ -121,13 +121,15 @@
 
 - name: Fix permissions for keys
   file:
-    path: {{ item }}
+    path: "{{ keys }}"
     owner: root
     group: root
     mode: 0600
   with_items:
     - "{{ openvpn_signing_ca_key }}"
     - "{{ openvpn_key_dir }}/server.key"
+  loop_control:
+    loop_var: keys
   
 
 
