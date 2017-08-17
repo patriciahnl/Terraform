@@ -1,0 +1,50 @@
+- name: Create keys directory
+  file:
+    path: "{{ openvpn_key_dir }}"
+    state: directory
+    owner: root
+    group: root
+    recurse: yes
+    mode: 0700
+
+- name: Create /etc/openvpn/easy-rsa directory
+  file:
+    path: /etc/openvpn/easy-rsa
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Render openssl.cnf 
+  template:
+    src: openssl.cnf.j2
+    dest: /etc/openvpn/easy-rsa/openssl.cnf
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Render pkitool config file
+  template:
+    src: pkitool.j2
+    dest: /etc/openvpn/easy-rsa/pkitool
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Render vars file
+  template:
+    src: vars.j2
+    dest: /etc/openvpn/easy-rsa/vars
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Render Rakefile
+  template:
+    src: Rakefile.j2
+    dest: /etc/openvpn/easy-rsa/Rakefile
+    owner: root
+    group: root
+    mode: 0755
+
+

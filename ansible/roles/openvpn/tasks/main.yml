@@ -1,4 +1,6 @@
 - include: "{{ item }}"   
   with_items:
     - epel.yml
-    - install.yml 
+    - sysctl.yml 
+    - install.yml
+    - serverconfig.yml 

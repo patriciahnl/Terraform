@@ -1,0 +1,18 @@
+openvpn_key_ca_expire: 3650
+openvpn_key_expire: 3650
+openvpn_key_size: 1024
+openvpn_key_country: 'US'
+openvpn_key_province: 'CA'
+openvpn_key_city: 'San Francisco'
+openvpn_key_org: 'Fort Funston'
+openvpn_key_email: 'admin@foobar.com'
+openvpn_key_message_digest: 'sha256'
+
+openvpn_client_prefix: 'vpn-prod'
+openvpn_key_dir: '/etc/openvpn/keys'
+openvpn_signing_ca_key: '/etc/openvpn/keys/ca.key'
+openvpn_signing_ca_cert: '/etc/openvpn/keys/ca.crt'
+openvpn_user_query: '*:*'
+
+openvpn_config_proto: 'udp'
+openvpn_config_port: '1194'
