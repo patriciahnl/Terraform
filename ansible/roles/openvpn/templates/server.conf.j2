@@ -1,0 +1,5 @@
+{% for key,value in openvpn_config.items() %}
+{% if value != '' %}
+{{ key }} {{value}}
+{% endif %}
+{% endfor %}
