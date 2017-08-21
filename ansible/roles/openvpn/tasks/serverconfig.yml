@@ -131,6 +131,24 @@
   loop_control:
     loop_var: keys
   
+- name: Generate crl
+  shell: |
+    export KEY_CN="{{ openvpn_key_org }} CA"
+    openssl ca -config /etc/openvpn/easy-rsa/openssl.cnf -gencrl \
+    -keyfile {{ openvpn_key_dir }}/server.key \
+    -cert {{ openvpn_key_dir }}/server.crt \
+    -out {{ openvpn_key_dir }}/crl.pem
+  args:
+    creates: "{{ openvpn_key_dir }}/crl.pem"
+  become: true
+
+- name: Render default server.conf
+  template:
+    src: server.conf.j2
+    dest: /etc/openvpn/server.conf
+    owner: root
+    group: root
+    mode: 0644
 
 
 
