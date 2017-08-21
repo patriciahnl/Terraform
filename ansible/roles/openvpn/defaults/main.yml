@@ -16,3 +16,40 @@ openvpn_user_query: '*:*'
 
 openvpn_config_proto: 'udp'
 openvpn_config_port: '1194'
+
+#server.conf variables
+#
+#
+#
+openvpn_push_routes: []
+openvpn_push_options: []
+
+openvpn_config:
+  user: 'nobody'
+  group: 'nobody'
+  local: "{{ ansible_default_ipv4.address }}"
+  proto: 'udp'
+  port: '1194'
+  keepalive: '10 120'
+  log: '/var/log/openvpn.log'
+  push: 'nil'
+  script-security: 2
+  up: '/etc/openvpn/server.up.sh'
+  persist-key: ''
+  persist-tun: ''
+  comp-lzo: ''
+  ca: "{{ openvpn_signing_ca_cert }}"
+  key: "{{ openvpn_key_dir }}/server.key"
+  cert: "{{ openvpn_key_dir }}/server.crt"
+  dh: "{{ openvpn_key_dir }}/dh{{ openvpn_key_size}}.pem"
+  crl-verify: '/etc/openvpn/crl.pem'
+
+openvpn_server_config:
+  openvpn_config_server: '{{ openvpn_subnet }} {{ openvpn_netmask }}'
+  openvpn_config_dev: 'tun0'
+  openvpn_config_ifconfig_pool_persist: 'ips.txt'
+
+openvpn_client_config:
+  openvpn_config_client: ''
+  openvpn_config_dev: 'tun0'
+
