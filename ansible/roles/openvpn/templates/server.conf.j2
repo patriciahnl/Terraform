@@ -3,3 +3,27 @@
 {{ key }} {{value}}
 {% endif %}
 {% endfor %}
+
+{# render push routes #}
+
+{% for item in openvpn_push_routes %}
+push "{{ item }}"
+{% endfor %}
+
+{# render push options #}
+
+{% for item in openvpn_push_options %}
+push "{{ item }}"
+{% endfor %}
+
+{% if openvpn_type == 'server' %}
+{% for key,value in openvpn_server_config.items() %}
+{{ key }} {{ value }}
+{% endfor %}
+{% elif openvpn_type == 'client' %}
+{% for key,value in openvpn_client_config.items() %}
+{{ key }} {{ value }}
+{% endfor %}
+{% endif %}
+
+

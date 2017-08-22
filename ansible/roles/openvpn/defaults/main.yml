@@ -17,13 +17,25 @@ openvpn_user_query: '*:*'
 openvpn_config_proto: 'udp'
 openvpn_config_port: '1194'
 
+
+
+
+#server stuff
+#type: server, client (in the future bridge will be also handled)
+openvpn_type: 'server'
+openvpn_subnet: '10.8.0.0'
+openvpn_netmask: '255.255.0.0'
+
 #server.conf variables
-#
-#
-#
+
+#handled
+#both push routes and push options must be defined as array of strings
+#e.g: openvpn_push_routes: ['route 192.168.10.0 255.255.255.0', 'route.....']
+#openvpn_push_options: ['dhcp-option DNS 208.67.222.222', '......']
 openvpn_push_routes: []
 openvpn_push_options: []
 
+#config handled
 openvpn_config:
   user: 'nobody'
   group: 'nobody'
@@ -44,12 +56,13 @@ openvpn_config:
   dh: "{{ openvpn_key_dir }}/dh{{ openvpn_key_size}}.pem"
   crl-verify: '/etc/openvpn/crl.pem'
 
+#neeeds to be handled
 openvpn_server_config:
-  openvpn_config_server: '{{ openvpn_subnet }} {{ openvpn_netmask }}'
-  openvpn_config_dev: 'tun0'
-  openvpn_config_ifconfig_pool_persist: 'ips.txt'
+  server: '{{ openvpn_subnet }} {{ openvpn_netmask }}'
+  dev: 'tun0'
+  ifconfig-pool-persist: 'ips.txt'
 
 openvpn_client_config:
-  openvpn_config_client: ''
-  openvpn_config_dev: 'tun0'
+  client: ''
+  dev: 'tun0'
 
