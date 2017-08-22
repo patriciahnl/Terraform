@@ -54,7 +54,7 @@ openvpn_config:
   key: "{{ openvpn_key_dir }}/server.key"
   cert: "{{ openvpn_key_dir }}/server.crt"
   dh: "{{ openvpn_key_dir }}/dh{{ openvpn_key_size}}.pem"
-  crl-verify: '/etc/openvpn/crl.pem'
+  crl-verify: '/etc/openvpn/keys/crl.pem'
 
 #neeeds to be handled
 openvpn_server_config:
