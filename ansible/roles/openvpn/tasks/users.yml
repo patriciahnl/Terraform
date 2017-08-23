@@ -1,0 +1,34 @@
+#Generate client configuration files
+
+
+
+- name: Include users dict
+  include_vars:
+    file: users.yml
+
+#- name: Iterate through ids
+#  debug:
+#    msg: "User {{ item.key }} has id: {{ item.value.id }} "
+#  with_dict: "{{ users }}"
+
+
+- name: Generate cert for user
+  shell: ./pkitool {{ item.value.id }}
+  args:
+    chdir: "/etc/openvpn/easy-rsa"
+    creates: "{{ openvpn_key_dir }}/{{ item.value.id }}.crt"
+  with_dict: "{{ users }}"
+  environment:
+    EASY_RSA: "/etc/openvpn/easy-rsa"
+    KEY_CONFIG: "/etc/openvpn/easy-rsa/openssl.cnf"
+    KEY_DIR: "{{ openvpn_key_dir }}"
+    CA_EXPIRE: "{{ openvpn_key_ca_expire }}"
+    KEY_EXPIRE: "{{ openvpn_key_expire }}"
+    KEY_SIZE: "{{ openvpn_key_size }}"
+    KEY_COUNTRY: "{{ openvpn_key_country }}"
+    KEY_PROVINCE: "{{ openvpn_key_province }}"
+    KEY_CITY: "{{ openvpn_key_city }}"
+    KEY_ORG: "{{ openvpn_key_org }}"
+    KEY_EMAIL: "{{ openvpn_key_email }}"
+  
+    
