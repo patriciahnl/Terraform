@@ -66,3 +66,6 @@ openvpn_client_config:
   client: ''
   dev: 'tun0'
 
+openvpn_gateway: "vpn.{{ ansible_fqdn.split('.')[1:] | join('.') }}"
+openvpn_client_cn: "client"
+
