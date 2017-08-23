@@ -1,0 +1,15 @@
+client
+dev tun
+proto {{ openvpn_config.proto }}
+remote {{ openvpn_gateway }} {{ openvpn_config.port }}
+resolv-retry infinite
+nobind
+persist-key
+persist-tun
+ca ca.crt
+cert {{ client_cn }}.crt
+key {{ client_cn }}.key
+comp-lzo
+verb 3
+cipher AES-256-CBC
+mute 20

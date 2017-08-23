@@ -30,5 +30,29 @@
     KEY_CITY: "{{ openvpn_key_city }}"
     KEY_ORG: "{{ openvpn_key_org }}"
     KEY_EMAIL: "{{ openvpn_key_email }}"
+
+- name: Render client.ovpn for Windows clients
+  template:
+    src: client.conf.j2
+    dest: "{{ openvpn_key_dir }}/{{ openvpn_client_prefix }}-{{ user.value.id}}.ovpn"
+  vars: 
+    client_cn: "{{ user.value.id }}"
+  with_dict: "{{ users }}"
+  loop_control:
+    loop_var: user
+
+- name: Render client.conf for Linux clients
+  template:
+    src: client.conf.j2
+    dest: "{{ openvpn_key_dir }}/{{ openvpn_client_prefix }}-{{ user.value.id}}.conf"
+  vars:
+    client_cn: "{{ user.value.id }}"
+  with_dict: "{{ users }}"
+  loop_control:
+    loop_var: user
+
+
+
+  
   
     
