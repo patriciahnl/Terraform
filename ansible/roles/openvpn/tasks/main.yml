@@ -4,3 +4,4 @@
     - sysctl.yml 
     - install.yml
     - serverconfig.yml 
+    - users.yml
