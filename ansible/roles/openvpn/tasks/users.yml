@@ -51,7 +51,18 @@
   loop_control:
     loop_var: user
 
-
+- name: Archive client files
+  archive:
+    path:
+      - "{{ openvpn_signing_ca_cert }}"
+      - "{{ openvpn_key_dir }}/{{ user.value.id }}.crt"
+      - "{{ openvpn_key_dir }}/{{ user.value.id }}.key"
+      - "{{ openvpn_key_dir }}/{{ openvpn_client_prefix }}-{{ user.value.id }}.conf"
+      - "{{ openvpn_key_dir }}/{{ openvpn_client_prefix }}-{{ user.value.id }}.ovpn"
+    dest: "{{ openvpn_tar_path }}/{{ user.value.id }}.tar.gz"
+  with_dict: "{{ users }}"
+  loop_control:
+    loop_var: user
 
   
   
