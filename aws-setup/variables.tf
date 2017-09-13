@@ -25,7 +25,7 @@ variable "enable_dns_support" {
 
 variable "enable_dns_hostnames" {
   description = "True means the instances launched in that VPC will get a public DNS hostname" 
-  default = false
+  default = true
 }
 
 variable "vpc_resource_tags" {
