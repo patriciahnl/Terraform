@@ -1,74 +1,78 @@
-openvpn_key_ca_expire: 3650
-openvpn_key_expire: 3650
-openvpn_key_size: 1024
-openvpn_key_country: 'RO'
-openvpn_key_province: 'CJ'
-openvpn_key_city: 'Cluj-Napoca'
-openvpn_key_org: 'UTCN'
-openvpn_key_email: 'patricia.szasz@endava.com'
-openvpn_key_message_digest: 'sha256'
+openvpn:
+  tar_path: '/etc/openvpn/keys'
+  key:
+    ca_expire: 3650
+    expire: 3650
+    size: 1024
+    country: 'R0'
+    province: 'CJ'
+    city: 'Cluj-Napoca'
+    org: 'UTCN'
+    email: 'patrica.szasz@endava.com'
+    message_digest: 'sha265'
+  client_prefix: 'vpn-prod'
+  key_dir: '/etc/openvpn/keys'
+  user_query: '*:*' 
+  type: 'server'
+  subnet: '10.8.0.0' 
+  netmask: '255.255.0.0'
+#can't define signing_ca_key as part of openvpn dict
+##and reuse {{ openvpn.key.dir }} because it goes into recursive loop
 
-openvpn_client_prefix: 'vpn_licenta'
-openvpn_key_dir: '/etc/openvpn/keys'
-openvpn_signing_ca_key: '/etc/openvpn/keys/ca_licenta.key'
-openvpn_signing_ca_cert: '/etc/openvpn/keys/ca_licenta.crt'
-openvpn_user_query: '*:*'
 
-openvpn_config_proto: 'tcp'
-openvpn_config_port: '45654'
+#Client
+openvpn_client:
+  gateway: "vpn.{{ ansible_fqdn.split('.')[1:] | join('.') }}"
+  client_cn: 'client'
 
+#Server
+openvpn_server:
+  push_routes: []
+  push_options: []
 
-
-
-#server stuff
-#type: server, client (in the future bridge will be also handled)
-openvpn_type: 'server'
-openvpn_subnet: '10.8.0.0'
-openvpn_netmask: '255.255.0.0'
-
-#server.conf variables
-
-#handled
-#both push routes and push options must be defined as array of strings
-#e.g: openvpn_push_routes: ['route 192.168.10.0 255.255.255.0', 'route.....']
-#openvpn_push_options: ['dhcp-option DNS 208.67.222.222', '......']
-openvpn_push_routes: ['route 10.9.0.0 255.255.0.0', 'route 10.11.0.0 255.255.0.0']
-openvpn_push_options: []
-
-#config handled
+#config file
 openvpn_config:
   user: 'nobody'
   group: 'nobody'
   local: "{{ ansible_default_ipv4.address }}"
-  proto: 'tcp'
-  port: '45654'
+  port: '1194'
   keepalive: '10 120'
   log: '/var/log/openvpn.log'
-  push: 'nil'
+  push: nil
   script-security: 2
   up: '/etc/openvpn/server.up.sh'
   persist-key: ''
   persist-tun: ''
   comp-lzo: ''
   ca: "{{ openvpn_signing_ca_cert }}"
-  key: "{{ openvpn_key_dir }}/server.key"
-  cert: "{{ openvpn_key_dir }}/server.crt"
-  dh: "{{ openvpn_key_dir }}/dh{{ openvpn_key_size}}.pem"
-  crl-verify: '/etc/openvpn/keys/crl.pem'
+  key: "{{ openvpn.key_dir }}/server.key"
+  cert: "{{ openvpn.key_dir }}/server.crt"
+  dh: "{{ openvpn.key_dir }}/dh{{ openvpn.key.size}}.pem"
+  crl-verify: '/etc/openvpn/crl.pem'
 
-#neeeds to be handled
-openvpn_server_config:
-  server: '{{ openvpn_subnet }} {{ openvpn_netmask }}'
+#interface configuration depending on type
+openvpn_server_config: 
+  server: '{{ openvpn.subnet }} {{ openvpn.netmask }}'
   dev: 'tun0'
   ifconfig-pool-persist: 'ips.txt'
 
 openvpn_client_config:
   client: ''
   dev: 'tun0'
+  
+  
+
+openvpn_signing_ca_key: "{{ openvpn.key_dir }}/ca.key"
+openvpn_signing_ca_cert: "{{ openvpn.key_dir }}/ca.crt"
+
+
+#both push routes and push options must be defined as array of strings
+#e.g: openvpn_push_routes: ['route 192.168.10.0 255.255.255.0', 'route.....']
+#openvpn_push_options: ['dhcp-option DNS 208.67.222.222', '......']
+openvpn_client_config:
+  client: ''
+  dev: 'tun0'
 
 #openvpn_gateway: "vpn.{{ ansible_fqdn.split('.')[1:] | join('.') }}"
-openvpn_gateway: "{{ inventory_hostname }}"
-openvpn_client_cn: "client"
 
-openvpn_tar_path: "/etc/openvpn/keys"
 
