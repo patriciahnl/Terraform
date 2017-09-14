@@ -6,13 +6,13 @@
 
 {# render push routes #}
 
-{% for item in openvpn_push_routes %}
+{% for item in openvpn_server.push_routes %}
 push "{{ item }}"
 {% endfor %}
 
 {# render push options #}
 
-{% for item in openvpn_push_options %}
+{% for item in openvpn_server.push_options %}
 push "{{ item }}"
 {% endfor %}
 
