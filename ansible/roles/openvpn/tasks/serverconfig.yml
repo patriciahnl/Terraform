@@ -1,6 +1,6 @@
 - name: Create keys directory
   file:
-    path: "{{ openvpn_key_dir }}"
+    path: "{{ openvpn.key_dir }}"
     state: directory
     owner: root
     group: root
@@ -39,13 +39,6 @@
     group: root
     mode: 0755
 
-- name: Render Rakefile
-  template:
-    src: Rakefile.j2
-    dest: /etc/openvpn/easy-rsa/Rakefile
-    owner: root
-    group: root
-    mode: 0755
 
 - name: Render server.up.sh
   template:
@@ -67,7 +60,7 @@
 - name: Render openssl.cnf in key_dir
   template: 
     src: openssl.cnf.j2
-    dest: "{{ openvpn_key_dir }}/openssl.cnf"
+    dest: "{{ openvpn.key_dir }}/openssl.cnf"
     owner: root
     group: root
     mode: 0644
@@ -76,31 +69,31 @@
 - name: Create index.txt
   template: 
     src: index.txt.j2
-    dest: "{{ openvpn_key_dir }}/index.txt"
+    dest: "{{ openvpn.key_dir }}/index.txt"
     owner: root
     group: root
     mode: 0600
     force: no
 
-- name: Create {{ openvpn_key_dir }}/serial
+- name: Create {{ openvpn.key_dir }}/serial
   template:
     src: serial.j2
-    dest: "{{ openvpn_key_dir }}/serial"
+    dest: "{{ openvpn.key_dir }}/serial"
     force: no
     
 
 - name: Create DH params
-  command: openssl dhparam -out {{ openvpn_key_dir }}/dh{{ openvpn_key_size }}.pem {{ openvpn_key_size }} creates={{ openvpn_key_dir }}/dh{{ openvpn_key_size }}.pem
+  command: openssl dhparam -out {{ openvpn.key_dir }}/dh{{ openvpn.key.size }}.pem {{ openvpn.key.size }} creates={{ openvpn.key_dir }}/dh{{ openvpn.key_size }}.pem
   become: true
 
 - name: Openvpn init CA
   shell: |
-    export KEY_CN="{{ openvpn_key_org }} CA"
-    openssl req -batch -days {{ openvpn_key_ca_expire }} \
-    -nodes -new -newkey rsa:{{ openvpn_key_size }} \
-    -{{ openvpn_key_message_digest }} -x509 \
+    export KEY_CN="{{ openvpn.key.org }} CA"
+    openssl req -batch -days {{ openvpn.key.ca_expire }} \
+    -nodes -new -newkey rsa:{{ openvpn.key.size }} \
+    -{{ openvpn.key.message_digest }} -x509 \
     -keyout {{ openvpn_signing_ca_key }} \
-    -out {{ openvpn_signing_ca_cert }} -config {{ openvpn_key_dir }}/openssl.cnf
+    -out {{ openvpn_signing_ca_cert }} -config {{ openvpn.key_dir }}/openssl.cnf
   args:
     creates: "{{ openvpn_signing_ca_cert }}"
   become: true
@@ -108,15 +101,15 @@
 - name: Openvpn server key
   shell: |
     export KEY_CN='server'
-    openssl req -batch -days {{ openvpn_key_expire }} \
-    -nodes -new -newkey rsa:{{ openvpn_key_size }} -keyout {{ openvpn_key_dir }}/server.key \
-    -out {{ openvpn_key_dir }}/server.csr -extensions server \
-    -config {{ openvpn_key_dir }}/openssl.cnf && \
-    openssl ca -batch -days {{ openvpn_key_ca_expire }} \
-    -out {{ openvpn_key_dir }}/server.crt -in {{ openvpn_key_dir }}/server.csr \
-    -extensions server -md {{ openvpn_key_message_digest }} -config {{ openvpn_key_dir }}/openssl.cnf
+    openssl req -batch -days {{ openvpn.key.expire }} \
+    -nodes -new -newkey rsa:{{ openvpn.key.size }} -keyout {{ openvpn.key_dir }}/server.key \
+    -out {{ openvpn.key.dir }}/server.csr -extensions server \
+    -config {{ openvpn.key_dir }}/openssl.cnf && \
+    openssl ca -batch -days {{ openvpn.key.ca_expire }} \
+    -out {{ openvpn.key_dir }}/server.crt -in {{ openvpn.key_dir }}/server.csr \
+    -extensions server -md {{ openvpn.key.message_digest }} -config {{ openvpn.key_dir }}/openssl.cnf
   args:
-    creates: "{{ openvpn_key_dir }}/server.crt"
+    creates: "{{ openvpn.key_dir }}/server.crt"
   become: true
 
 - name: Fix permissions for keys
@@ -127,19 +120,19 @@
     mode: 0600
   with_items:
     - "{{ openvpn_signing_ca_key }}"
-    - "{{ openvpn_key_dir }}/server.key"
+    - "{{ openvpn.key_dir }}/server.key"
   loop_control:
     loop_var: keys
   
 - name: Generate crl
   shell: |
-    export KEY_CN="{{ openvpn_key_org }} CA"
+    export KEY_CN="{{ openvpn.key.org }} CA"
     openssl ca -config /etc/openvpn/easy-rsa/openssl.cnf -gencrl \
-    -keyfile {{ openvpn_key_dir }}/server.key \
-    -cert {{ openvpn_key_dir }}/server.crt \
-    -out {{ openvpn_key_dir }}/crl.pem
+    -keyfile {{ openvpn.key_dir }}/server.key \
+    -cert {{ openvpn.key_dir }}/server.crt \
+    -out {{ openvpn.key_dir }}/crl.pem
   args:
-    creates: "{{ openvpn_key_dir }}/crl.pem"
+    creates: "{{ openvpn.key_dir }}/crl.pem"
   become: true
 
 - name: Render default server.conf
