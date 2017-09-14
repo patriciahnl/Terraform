@@ -6,11 +6,10 @@
   include_vars:
     file: users.yml
 
-#- name: Iterate through ids
-#  debug:
-#    msg: "User {{ item.key }} has id: {{ item.value.id }} "
-#  with_dict: "{{ users }}"
-
+- name: Create directory for tar archives
+  file:
+    state: directory
+    path: "{{ openvpn_tar_path }}"
 
 - name: Generate cert for user
   shell: ./pkitool {{ item.value.id }}
